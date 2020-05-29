@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Formulario extends JFrame implements ActionListener {
-    JButton b;
     JButton btnReset;
     JTextField txf;
     String acu = "";
@@ -14,8 +13,8 @@ public class Formulario extends JFrame implements ActionListener {
     JMenuItem mnuGrabar, mnuLeer, mnuReset, mnuSalir, mnuInformacion;
 
     private String[] teclado = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "0", "*" };
-    Color color = Color.green;
-    Color colorBase = null;
+    JButton[] b = new JButton[12];
+    Color colorbase, colorCambiado;
 
     String home = System.getProperty("user.home");
     File archivo = new File("/Telefono.txt");
@@ -25,16 +24,15 @@ public class Formulario extends JFrame implements ActionListener {
         setLayout(null);
 
         int x = 10, y = 100;
-        for (int i = 0; i < teclado.length; i++) {
+        for (int i = 0; i < b.length; i++) {
 
-            b = new JButton(teclado[i]);
-            b.setSize(100, 20);
-            b.setLocation(x, y);
-            b.setBackground(colorBase);
-            b.addMouseMotionListener(new Raton());
-            b.addMouseListener(new Raton());
-            b.addActionListener(this);
-            this.add(b);
+            b[i] = new JButton(teclado[i]);
+            b[i].setSize(100, 20);
+            b[i].setLocation(x, y);
+            b[i].addMouseMotionListener(new Raton());
+            b[i].addMouseListener(new Raton());
+            b[i].addActionListener(this);
+            this.add(b[i]);
 
             if ((i + 1) % 3 == 0) {
                 x = 10;
@@ -108,24 +106,35 @@ public class Formulario extends JFrame implements ActionListener {
     private class Raton extends MouseAdapter {
 
         @Override
-        public void mouseMoved(MouseEvent e) {
-            ((JButton) e.getSource()).setBackground(color);
+        public void mouseEntered(MouseEvent e) {
+            for (int i = 0; i < b.length; i++) {
+                if (b[i].getBackground() != colorCambiado) {
+                    if (e.getSource() == b[i]) {
+                        b[i].setBackground(Color.red);
+                        colorbase = b[i].getBackground();
+                    }
+                }
+            }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            ((JButton) e.getSource()).setBackground(colorBase);
-            colorBase = null;
+            for (int i = 0; i < b.length; i++) {
+                if (b[i].getBackground() == colorbase) {
+                    b[i].setBackground(null);
+                }
+            }
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() >= 1) {
-                colorBase = Color.red;
-                ((JButton) e.getSource()).setBackground(colorBase);
+            for (int i = 0; i < b.length; i++) {
+                if (e.getSource() == b[i]) {
+                    b[i].setBackground(Color.yellow);
+                    colorCambiado = b[i].getBackground();
+                }
             }
         }
-
     }
 
     private class Teclado extends KeyAdapter {
@@ -163,12 +172,12 @@ public class Formulario extends JFrame implements ActionListener {
 
         if (e.getSource() == mnuLeer) {
 
-            String contenido;
+            String contenido = "";
             try (Scanner f = new Scanner(new File(home + archivo))) {
                 while (f.hasNext()) {
-                    contenido = f.nextLine();
-                    JOptionPane.showMessageDialog(null, contenido, "Numeros", JOptionPane.INFORMATION_MESSAGE);
+                    contenido += f.nextLine() + "\n";
                 }
+                JOptionPane.showMessageDialog(null, contenido, "Numeros", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception s) {
                 System.err.println("Error de Accesso al Archivo");
             }
@@ -177,8 +186,8 @@ public class Formulario extends JFrame implements ActionListener {
         if (e.getSource() == btnReset || e.getSource() == mnuReset) {
             acu = "";
             txf.setText(null);
-            for (int i = 0; i < teclado.length; i++) {
-                b.setBackground(null);
+            for (int i = 0; i < b.length; i++) {
+                b[i].setBackground(null);
 
             }
         }
