@@ -31,6 +31,7 @@ public class Formulario extends JFrame implements ActionListener {
             b[i].setLocation(x, y);
             b[i].addMouseMotionListener(new Raton());
             b[i].addMouseListener(new Raton());
+            b[i].addKeyListener(new Teclado());
             b[i].addActionListener(this);
             this.add(b[i]);
 
@@ -54,7 +55,6 @@ public class Formulario extends JFrame implements ActionListener {
         btnReset.setSize(100, 20);
         btnReset.setLocation(220, 270);
         btnReset.addActionListener(this);
-        btnReset.addKeyListener(new Teclado());
         add(btnReset);
 
         // Menú Archivo
@@ -134,7 +134,7 @@ public class Formulario extends JFrame implements ActionListener {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() >= KeyEvent.VK_0 && e.getKeyCode() <= KeyEvent.VK_9) {
+            if (e.getKeyCode() >= e.VK_0 && e.getKeyCode() <= e.VK_9) {
                 acu += e.getKeyChar();
 
             }
