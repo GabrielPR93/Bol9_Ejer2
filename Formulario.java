@@ -68,7 +68,6 @@ public class Formulario extends JFrame implements ActionListener {
 
         mnuArchivo = new JMenu("Archivo");
         mnuArchivo.add(mnuGrabar);
-        mnuArchivo.setMnemonic('G');
         mnuArchivo.add(mnuLeer);
 
         // Menú Móvil
@@ -107,33 +106,27 @@ public class Formulario extends JFrame implements ActionListener {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            for (int i = 0; i < b.length; i++) {
-                if (b[i].getBackground() != colorCambiado) {
-                    if (e.getSource() == b[i]) {
-                        b[i].setBackground(Color.red);
-                        colorbase = b[i].getBackground();
-                    }
-                }
+
+            if (((JButton) e.getSource()).getBackground() != colorCambiado) {
+                ((JButton) e.getSource()).setBackground(Color.red);
+                colorbase = ((JButton) e.getSource()).getBackground();
+
             }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            for (int i = 0; i < b.length; i++) {
-                if (b[i].getBackground() == colorbase) {
-                    b[i].setBackground(null);
-                }
+
+            if (((JButton) e.getSource()).getBackground() == colorbase) {
+                ((JButton) e.getSource()).setBackground(null);
             }
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            for (int i = 0; i < b.length; i++) {
-                if (e.getSource() == b[i]) {
-                    b[i].setBackground(Color.yellow);
-                    colorCambiado = b[i].getBackground();
-                }
-            }
+
+            ((JButton) e.getSource()).setBackground(Color.yellow);
+            colorCambiado = ((JButton) e.getSource()).getBackground();
         }
     }
 
@@ -152,6 +145,7 @@ public class Formulario extends JFrame implements ActionListener {
             txf.setText(acu);
 
         }
+
     }
 
     @Override
